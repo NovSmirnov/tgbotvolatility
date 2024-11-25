@@ -14,6 +14,9 @@ public class SimpleBot extends TelegramLongPollingBot {
     private String apiKey;
     private Charts charts;
 
+    private static final String VOLATILITY = "/volatility";
+
+
 
     public SimpleBot(String apiKey, String botName) {
         super(apiKey);
@@ -37,17 +40,21 @@ public class SimpleBot extends TelegramLongPollingBot {
         Message message = update.getMessage();
         try {
             String command = message.getText();
-
             System.out.println(message.getText());
             SendMessage response = new SendMessage();
             Long chatId = message.getChatId();
             response.setChatId(String.valueOf(chatId));
-            for (int i = 0; i < charts.getDescription().size(); i++) {
-                SendPhoto photo = new SendPhoto();
-                photo.setChatId(String.valueOf(chatId));
-                photo.setPhoto(charts.getPics().get(i));
-                photo.setCaption(charts.getDescription().get(i));
-                execute(photo);
+            if (command.equalsIgnoreCase(VOLATILITY)) {
+                for (int i = 0; i < charts.getDescription().size(); i++) {
+                    SendPhoto photo = new SendPhoto();
+                    photo.setChatId(String.valueOf(chatId));
+                    photo.setPhoto(charts.getPics().get(i));
+                    photo.setCaption(charts.getDescription().get(i));
+                    execute(photo);
+                }
+            } else {
+                response.setText("Неверная команда!");
+                execute(response);
             }
         } catch (TelegramApiException e) {
             e.printStackTrace();

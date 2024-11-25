@@ -52,4 +52,18 @@ public class Dao {
         }
     }
 
+    public void cleanDb() {
+        session = HibernateSessionFactoryUtil.getRequestSessionFactory().openSession();
+        String stringQuery1 = "DELETE FROM AtrValueEntity";
+        String stringQuery2 = "DELETE FROM IntegratedFutVolLiqEntity";
+        String[] queries = {stringQuery1, stringQuery2};
+        Transaction tx1 = session.beginTransaction();
+        for (String strQuery : queries) {
+            jakarta.persistence.Query query = session.createQuery(strQuery, null);
+            query.executeUpdate();
+        }
+        tx1.commit();
+        session.close();
+    }
+
 }

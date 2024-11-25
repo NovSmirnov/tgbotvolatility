@@ -25,6 +25,13 @@ public class DbService {
         dao.saveAll(integratedFutVolLiqEntities);
     }
 
+    public static void cleanDataBase() {
+        if (HibernateSessionFactoryUtil.isBaseExist()) {
+            Dao dao = new Dao();
+            dao.cleanDb();
+        }
+    }
+
     public static List<IntegratedFutVolLiq> loadVolatilityResultsFromBase() {
         Dao dao = new Dao();
         List<IntegratedFutVolLiq> integratedFutVolLiqList = new ArrayList<>();

@@ -26,6 +26,7 @@ public class VolatilityBotService {
     private static void getAndStoreResult() {
         List<IntegratedFutVolLiq> result = VolatilityUtils.actualFutVolatilityFromLiquidity(20, 7,
                 20, 90);
+        DbService.cleanDataBase();
         DbService.saveVolatilityResultsToBase(result);
     }
 
